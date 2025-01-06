@@ -1,0 +1,19 @@
+# Virtual environment
+venv/
+myworld/
+
+# Django specific
+*.pyc
+*.pyo
+__pycache__/
+db.sqlite3
+
+# Environment variables
+.env
+
+# VS Code settings
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
