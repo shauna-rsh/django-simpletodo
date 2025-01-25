@@ -1,31 +1,21 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.template import loader
-from django.conf import settings
 from .models import Task
-import pickle
-import os
-
-# Load the model and vectorizer
-model_path = os.path.join(settings.BASE_DIR, "todoapp", "ml_models", "task_model.pkl")
-with open(model_path, "rb") as f:
-    vectorizer, model = pickle.load(f)
 
 # View to display all tasks
 def task_list(request):
     tasks = Task.objects.all()  # Fetch all tasks from the database
     return render(request, 'task_list.html', {'tasks': tasks})
 
-
-# View to add a new task with predicted prioritization
+# View to add a new task
 def add_task(request):
-    if request.method == "POST":
-        title = request.POST.get("title") # Get the title and description
-        description = request.POST.get("description")
-        task_priority = model.predict(vectorizer.transform([description]))[0]# Predict the priority of the task based on the description
-        Task.objects.create(title=title, description=description, priority=task_priority)# Create and save the task with the predicted priority
-        return redirect("task_list")
-    return render(request, "add_task.html")# Render the add task form
+    if request.method == 'POST':
+        title = request.POST.get('title')  # Get the title from the form
+        description = request.POST.get('description')  # Get the description
+        Task.objects.create(title=title, description=description)  # Create a new task
+        return redirect('task_list')  # Redirect to the task list
+    return render(request, 'add_task.html')  # Render the add task form
 
 # View to mark a task as completed
 def complete_task(request, task_id):
