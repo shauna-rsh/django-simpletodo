@@ -50,15 +50,27 @@
         .add-task:hover {
             background-color: #0056b3;
         }
+        .priority-high {
+            color: red;
+            font-weight: bold;
+        }
+        .priority-medium {
+            color: orange;
+        }
+        .priority-low {
+            color: green;
+        }
     </style>
 </head>
 <body>
-    <h1>To-Do List</h1>
+    <h1>De-clutter your mind.</h1>
 
     <ul>
         {% for task in tasks %}
             <li class="{% if task.completed %}completed{% endif %}">
                 <span>{{ task.title }}</span>
+                <span class="{% if task.priority == 'High' %}priority-high{% elif task.priority == 'Medium' %}priority-medium{% elif task.priority == 'Low' %}priority-low{% endif %}">
+                    {{ task.priority }}</span>
                 <div>
                     {% if not task.completed %}
                         <a href="{% url 'complete_task' task.id %}">Mark as Completed</a>
